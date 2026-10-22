@@ -1,0 +1,143 @@
+/*
+  Webflow stickers + Halloween spider — styles.
+  Pair with stickers.js. See README.md for setup.
+*/
+
+/* ---------- Stickers: pop in on scroll, float, wiggle on hover ---------- */
+
+[data-sticker] {
+  rotate: var(--sticker-rotate, 0deg);
+  scale: 0;
+  cursor: pointer;
+  transition: scale 0.6s cubic-bezier(0.34, 1.8, 0.64, 1);
+  transition-delay: var(--sticker-delay, 0ms);
+  animation: sticker-float var(--sticker-float, 4s) ease-in-out infinite alternate;
+  animation-delay: calc(var(--sticker-delay, 0ms) * -3);
+}
+[data-sticker].sticker-in {
+  scale: 1;
+}
+/* after the pop-in, hover uses a quick, delay-free transition */
+[data-sticker].sticker-ready {
+  transition: scale 0.3s ease;
+}
+[data-sticker].sticker-ready:hover {
+  scale: 1.15;
+  animation: sticker-wiggle 0.5s ease-in-out infinite alternate;
+}
+[data-sticker].sticker-ready:active {
+  scale: 0.92;
+  transition-duration: 0.1s;
+}
+@keyframes sticker-float {
+  from { transform: translateY(-6%) rotate(-4deg); }
+  to   { transform: translateY(6%) rotate(4deg); }
+}
+@keyframes sticker-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-12deg); }
+  75%      { transform: rotate(12deg); }
+}
+
+/* ---------- Click burst ---------- */
+
+.sticker-burst-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sticker-burst-layer > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  height: auto;
+  max-width: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+/* ---------- Spider ---------- */
+
+.tb-spider {
+  --spider-size: 110px;
+  position: fixed;
+  top: 0;
+  right: 10vw;
+  width: var(--spider-size);
+  z-index: 9998;
+  pointer-events: none;
+}
+.tb-spider-swing {
+  position: absolute;
+  inset: 0 0 auto 0;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.tb-spider-thread {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2.5px;
+  height: 1px;
+  margin-left: -1.25px;
+  background: #2b2224;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+.tb-spider-body {
+  position: absolute;
+  inset: 0 0 auto 0;
+  will-change: transform;
+}
+.tb-spider-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.tb-spider-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #2b2224;
+  font: 600 15px/22px system-ui, sans-serif;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  opacity: 0.55;
+  transition: opacity 0.2s, scale 0.2s;
+}
+.tb-spider-body:hover .tb-spider-close,
+.tb-spider-close:focus-visible {
+  opacity: 1;
+}
+.tb-spider-close:hover {
+  scale: 1.12;
+}
+@media (max-width: 991px) {
+  .tb-spider {
+    display: none;
+  }
+}
+
+/* ---------- Reduced motion: show stickers still, no spider ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sticker] {
+    scale: 1;
+    transition: none;
+    animation: none;
+  }
+}
